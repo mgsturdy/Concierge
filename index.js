@@ -1,12 +1,16 @@
 const express = require('express');
 const bodyParser = require('body-parser');
 const twilioWebHooks = require('./twilioWebHooks');
+const path = require('path');
 
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 
+// Serve static files from the root directory
+app.use(express.static(__dirname));
+
 app.get('/', (req, res) => {
-    res.send('Twilio was here');
+    res.sendFile(path.join(__dirname, 'index.html'));
 });
 
 // Use the Twilio webhook routes
