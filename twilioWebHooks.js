@@ -51,4 +51,31 @@ router.post('/incoming-call', async (req, res) => {
     }
 });
 
+router.post('/generate-twilio-number', async (req, res) => {
+    try {
+        // Purchase a new Twilio number
+        const purchasedNumber = await twilioClient.incomingPhoneNumbers.create({
+            phoneNumber: req.body.phoneNumber, // or use areaCode for automatic number
+            // Set webhook URL for incoming calls
+            voiceUrl: 'https://cryptic-atoll-21443-886e803f0062.herokuapp.com/incoming-call'
+        });
+
+        // Add the new number to the 'numbers' table in Supabase
+        const { data, error } = await supabase
+            .from('numbers')
+            .insert([{ twilionumber: purchasedNumber.phoneNumber }])
+            .single();
+
+        if (error) {
+            throw error;
+        }
+
+        res.json({ message: 'Number added successfully', number: purchasedNumber.phoneNumber });
+    } catch (err) {
+        console.error('Error generating Twilio number:', err);
+        res.status(500).send('Error generating Twilio number');
+    }
+});
+
+
 module.exports = router;
