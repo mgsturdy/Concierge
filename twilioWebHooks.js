@@ -6,7 +6,7 @@ const { createClient } = require('@supabase/supabase-js');
 // Initialize Supabase client
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);SUPABA
+const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Initialize Twilio client
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
