@@ -27,15 +27,18 @@ router.post('/incoming-call', async (req, res) => {
 
         if (error) throw error;
 
-        // Assuming the first number in the array is the one to forward to
-        const forwardingNumber = data.forwardingnumbers[0];
-        if (!forwardingNumber) {
-            throw new Error('No forwarding number found');
-        }
-
-        // Connect the call to the forwarding number
+       // Create a new TwiML response
         const response = new VoiceResponse();
-        response.dial(forwardingNumber);
+        const dial = response.dial();
+
+        // Assuming the array contains the numbers to be dialed simultaneously
+        if (data.forwardingnumbers && data.forwardingnumbers.length) {
+            data.forwardingnumbers.forEach(number => {
+                dial.number(number);
+            });
+        } else {
+            throw new Error('No forwarding numbers found');
+        }
 
         res.type('text/xml');
         res.send(response.toString());
