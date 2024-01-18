@@ -1,5 +1,5 @@
 const express = require('express');
-const { twiml } = require('twilio');
+const twilio = require('twilio');
 const { VoiceResponse } = require('twilio').twiml;
 const router = express.Router();
 const { createClient } = require('@supabase/supabase-js');
