@@ -53,24 +53,24 @@ router.post('/incoming-call', async (req, res) => {
 
 router.post('/generate-twilio-number', async (req, res) => {
     try {
-        // Purchase a new Twilio number
-        const purchasedNumber = await twilioClient.incomingPhoneNumbers.create({
-            phoneNumber: req.body.phoneNumber, // or use areaCode for automatic number
-            // Set webhook URL for incoming calls
-            voiceUrl: 'https://cryptic-atoll-21443-886e803f0062.herokuapp.com/incoming-call'
-        });
-
-        // Add the new number to the 'numbers' table in Supabase
-        const { data, error } = await supabase
-            .from('numbers')
-            .insert([{ twilionumber: purchasedNumber.phoneNumber }])
-            .single();
-
-        if (error) {
-            throw error;
+        let purchasedNumber;
+        if (req.body.phoneNumber) {
+            // If specific phone number is provided
+            purchasedNumber = await twilioClient.incomingPhoneNumbers.create({
+                phoneNumber: req.body.phoneNumber,
+                voiceUrl: 'https://your-application.com/incoming-call-handler'
+            });
+        } else if (req.body.areaCode) {
+            // If area code is provided
+            purchasedNumber = await twilioClient.incomingPhoneNumbers.create({
+                areaCode: req.body.areaCode,
+                voiceUrl: 'https://your-application.com/incoming-call-handler'
+            });
+        } else {
+            throw new Error('Phone number or area code is required');
         }
 
-        res.json({ message: 'Number added successfully', number: purchasedNumber.phoneNumber });
+        // ... rest of your code ...
     } catch (err) {
         console.error('Error generating Twilio number:', err);
         res.status(500).send('Error generating Twilio number');
