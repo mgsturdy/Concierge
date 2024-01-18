@@ -1,5 +1,5 @@
 const express = require('express');
-const { Twilio, twiml: { VoiceResponse } } = require('twilio');
+const { twiml } = require('twilio');
 const router = express.Router();
 const { createClient } = require('@supabase/supabase-js');
 
@@ -33,14 +33,14 @@ router.post('/incoming-call', async (req, res) => {
         }
 
         // Connect the call to the forwarding number
-        const response = new Twilio.twiml.VoiceResponse();
+        const response = new twiml.VoiceResponse();
         response.dial(forwardingNumber);
 
         res.type('text/xml');
         res.send(response.toString());
     } catch (error) {
         console.error('Error handling incoming call:', error);
-        const response = new Twilio.twiml.VoiceResponse();
+        const response = new twiml.VoiceResponse();
         response.say('An error occurred, please try again later.');
         res.type('text/xml');
         res.send(response.toString());
