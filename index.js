@@ -5,6 +5,10 @@ const twilioWebHooks = require('./twilioWebHooks');
 const app = express();
 app.use(bodyParser.urlencoded({ extended: false }));
 
+router.get('/', (req, res) => {
+    res.send('Twilio was here');
+});
+
 // Use the Twilio webhook routes
 app.use(twilioWebHooks);
 
