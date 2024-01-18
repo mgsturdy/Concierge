@@ -12,7 +12,7 @@ const supabase = createClient(supabaseUrl, supabaseKey);
 // Initialize Twilio client
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
 const authToken = process.env.TWILIO_AUTH_TOKEN;
-const twilioClient = new Twilio(accountSid, authToken);
+const twilioClient = new twilio(accountSid, authToken);
 
 router.post('/incoming-call', async (req, res) => {
     const incomingNumber = req.body.To; // The Twilio number that received the call
