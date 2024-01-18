@@ -6,7 +6,7 @@ const { createClient } = require('@supabase/supabase-js');
 // Initialize Supabase client
 const supabaseUrl = process.env.SUPABASE_URL;
 const supabaseKey = process.env.SUPABASE_KEY;
-const supabase = createClient(supabaseUrl, supabaseKey);
+const supabase = createClient(supabaseUrl, supabaseKey);SUPABA
 
 // Initialize Twilio client
 const accountSid = process.env.TWILIO_ACCOUNT_SID;
@@ -19,15 +19,15 @@ router.post('/incoming-call', async (req, res) => {
     try {
         // Fetch forwarding number(s) from Supabase
         const { data, error } = await supabase
-            .from('Numbers')
-            .select('ForwardingNumbers')
-            .eq('TwilioNumber', incomingNumber)
+            .from('numbers')
+            .select('forwardingnumbers')
+            .eq('twilionumber', incomingNumber)
             .single();
 
         if (error) throw error;
 
         // Assuming the first number in the array is the one to forward to
-        const forwardingNumber = data.ForwardingNumbers[0];
+        const forwardingNumber = data.forwardingnumbers[0];
         if (!forwardingNumber) {
             throw new Error('No forwarding number found');
         }
