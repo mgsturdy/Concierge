@@ -1,7 +1,12 @@
 const express = require('express');
-const app = express();
+const bodyParser = require('body-parser');
+const twilioWebhooks = require('./twilioWebhooks');
 
-app.get('/', (req, res) => res.send('Hello World!'));
+const app = express();
+app.use(bodyParser.urlencoded({ extended: false }));
+
+// Use the Twilio webhook routes
+app.use('/twilio', twilioWebhooks);
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
