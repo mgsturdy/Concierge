@@ -14,11 +14,11 @@
     <script>
         document.getElementById('numberForm').addEventListener('submit', async function(e) {
             e.preventDefault();
-            const phoneNumber = document.getElementById('phoneNumber').value;
+            const areaCode = document.getElementById('areaCode').value;
             const response = await fetch('/generate-twilio-number', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ phoneNumber })
+                body: JSON.stringify({ areaCode })
             });
             const data = await response.json();
             console.log(data);
