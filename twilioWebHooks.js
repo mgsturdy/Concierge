@@ -33,6 +33,7 @@ router.post('/incoming-call', async (req, res) => {
 
          if (data.state === 'party') {
             // In party mode, auto-press '9'
+            response.say('Welcome! You are being let in to the party.', { voice: 'alice' });
             response.play({ digits: '9' });
 
         // Assuming the array contains the numbers to be dialed simultaneously
