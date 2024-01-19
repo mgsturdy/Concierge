@@ -58,13 +58,13 @@ router.post('/generate-twilio-number', async (req, res) => {
             // If specific phone number is provided
             purchasedNumber = await twilioClient.incomingPhoneNumbers.create({
                 phoneNumber: req.body.phoneNumber,
-                voiceUrl: 'https://your-application.com/incoming-call-handler'
+                voiceUrl: 'https://cryptic-atoll-21443-886e803f0062.herokuapp.com/incoming-call'
             });
         } else if (req.body.areaCode) {
             // If area code is provided
             purchasedNumber = await twilioClient.incomingPhoneNumbers.create({
                 areaCode: req.body.areaCode,
-                voiceUrl: 'https://your-application.com/incoming-call-handler'
+                voiceUrl: 'https://cryptic-atoll-21443-886e803f0062.herokuapp.com/incoming-call'
             });
         } else {
             throw new Error('Phone number or area code is required');
