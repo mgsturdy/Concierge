@@ -72,7 +72,18 @@ router.post('/generate-twilio-number', async (req, res) => {
             throw new Error('Phone number or area code is required');
         }
 
-        // ... rest of your code ...
+        const { data, error } = await supabase
+            .from('numbers')
+            .insert([{ twilionumber: purchasedNumber.phoneNumber }])
+            .single();
+
+        if (error) {
+            throw error;
+        }
+
+        res.json({ message: 'Number added successfully', number: purchasedNumber.phoneNumber });
+
+
     } catch (err) {
         console.error('Error generating Twilio number:', err);
         res.status(500).send('Error generating Twilio number');
