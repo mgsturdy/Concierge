@@ -66,23 +66,35 @@ router.post('/incoming-call', async (req, res) => {
 router.post('/generate-twilio-number', async (req, res) => {
     console.log(req.body); // Log the request body
 
-    try {
+   try {
         let purchasedNumber;
-        if (req.body.phoneNumber) {
-            // If specific phone number is provided
+
+        const country = req.body.country; // Expecting a country code like 'US' or 'CA'
+        const phoneNumber = req.body.phoneNumber;
+        const areaCode = req.body.areaCode;
+
+        if (phoneNumber) {
+            // If a specific phone number is provided
             purchasedNumber = await twilioClient.incomingPhoneNumbers.create({
-                phoneNumber: req.body.phoneNumber,
+                phoneNumber: phoneNumber,
                 voiceUrl: 'https://cryptic-atoll-21443-886e803f0062.herokuapp.com/incoming-call'
             });
-        } else if (req.body.areaCode) {
-            // If area code is provided
-            purchasedNumber = await twilioClient.incomingPhoneNumbers.create({
-                areaCode: req.body.areaCode,
-                voiceUrl: 'https://cryptic-atoll-21443-886e803f0062.herokuapp.com/incoming-call'
-            });
+        } else if (areaCode) {
+            // If area code is provided, along with country
+            purchasedNumber = await twilioClient.availablePhoneNumbers(country)
+                .local
+                .list({ areaCode: areaCode, limit: 1 })
+                .then(numbers => {
+                    if (numbers.length === 0) throw new Error('No numbers found for the given area code');
+                    return twilioClient.incomingPhoneNumbers.create({
+                        phoneNumber: numbers[0].phoneNumber,
+                        voiceUrl: 'https://cryptic-atoll-21443-886e803f0062.herokuapp.com/incoming-call'
+                    });
+                });
         } else {
-            throw new Error('Phone number or area code is required');
+            throw new Error('Phone number, area code, or country code is required');
         }
+
 
         const { data, error } = await supabase
             .from('numbers')
