@@ -52,6 +52,8 @@ router.post('/incoming-call', async (req, res) => {
 });
 
 router.post('/generate-twilio-number', async (req, res) => {
+    console.log(req.body); // Log the request body
+
     try {
         let purchasedNumber;
         if (req.body.phoneNumber) {
