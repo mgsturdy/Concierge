@@ -69,7 +69,7 @@ router.post('/generate-twilio-number', async (req, res) => {
    try {
         let purchasedNumber;
 
-        const country = req.body.country; // Expecting a country code like 'US' or 'CA'
+        const country = req.body.countryCode; // Expecting a country code like 'US' or 'CA'
         const phoneNumber = req.body.phoneNumber;
         const areaCode = req.body.areaCode;
 
