@@ -21,7 +21,7 @@ router.post('/incoming-call', async (req, res) => {
         // Fetch forwarding number(s) from Supabase
         const { data, error } = await supabase
             .from('numbers')
-            .select('forwardingnumbers')
+            .select('forwardingnumbers, state')
             .eq('twilionumber', incomingNumber)
             .single();
 
