@@ -31,7 +31,13 @@ router.post('/incoming-call', async (req, res) => {
         const response = new VoiceResponse();
         const dial = response.dial();
 
+         if (data.state === 'party') {
+            // In party mode, auto-press '9'
+            response.play({ digits: '9' });
+
         // Assuming the array contains the numbers to be dialed simultaneously
+       } else {
+
         if (data.forwardingnumbers && data.forwardingnumbers.length) {
             data.forwardingnumbers.forEach(number => {
                 dial.number(number);
@@ -39,6 +45,11 @@ router.post('/incoming-call', async (req, res) => {
         } else {
             throw new Error('No forwarding numbers found');
         }
+
+
+       } 
+
+
 
         res.type('text/xml');
         res.send(response.toString());
