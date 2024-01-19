@@ -7,22 +7,33 @@
 </head>
 <body>
     <form id="numberForm">
-        <input type="text" id="areaCode" placeholder="Enter phone number or area code">
+        <input type="text" id="countryCode" placeholder="Enter country code (e.g., US, CA)">
+        <input type="text" id="areaCode" placeholder="Enter area code (optional)">
+        <input type="text" id="phoneNumber" placeholder="Enter phone number (optional)">
         <button type="submit">Generate Number</button>
     </form>
 
     <script>
         document.getElementById('numberForm').addEventListener('submit', async function(e) {
             e.preventDefault();
+            const countryCode = document.getElementById('countryCode').value;
             const areaCode = document.getElementById('areaCode').value;
-            const response = await fetch('/generate-twilio-number', {
+            const phoneNumber = document.getElementById('phoneNumber').value;
+            
+            fetch('/generate-twilio-number', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ areaCode })
+                body: JSON.stringify({ countryCode, areaCode, phoneNumber })
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log(data);
+                alert('Twilio number generated successfully!');
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Error generating Twilio number.');
             });
-            const data = await response.json();
-            console.log(data);
-            // Handle response
         });
     </script>
 </body>
