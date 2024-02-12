@@ -5,13 +5,13 @@ const router = express.Router();
 const { createClient } = require('@supabase/supabase-js');
 
 // Initialize Supabase client
-const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_KEY;
+const supabaseUrl = "YOUR SUPABASE URL";
+const supabaseKey = "YOUR SUPABASE KEY";
 const supabase = createClient(supabaseUrl, supabaseKey);
 
 // Initialize Twilio client
-const accountSid = process.env.TWILIO_ACCOUNT_SID;
-const authToken = process.env.TWILIO_AUTH_TOKEN;
+const accountSid = "YOUR TWILIO ACCOUNT ID";
+const authToken = "YOUR TWILIO ACCOUNT TOKEN";
 const twilioClient = new twilio(accountSid, authToken);
 
 router.post('/incoming-call', async (req, res) => {
