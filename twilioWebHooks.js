@@ -77,7 +77,7 @@ router.post('/generate-twilio-number', async (req, res) => {
             // If a specific phone number is provided
             purchasedNumber = await twilioClient.incomingPhoneNumbers.create({
                 phoneNumber: phoneNumber,
-                voiceUrl: 'https://cryptic-atoll-21443-886e803f0062.herokuapp.com/incoming-call'
+                voiceUrl: 'mywebsite.com/incoming-call'
             });
         } else if (areaCode) {
             // If area code is provided, along with country
@@ -88,7 +88,7 @@ router.post('/generate-twilio-number', async (req, res) => {
                     if (numbers.length === 0) throw new Error('No numbers found for the given area code');
                     return twilioClient.incomingPhoneNumbers.create({
                         phoneNumber: numbers[0].phoneNumber,
-                        voiceUrl: 'https://cryptic-atoll-21443-886e803f0062.herokuapp.com/incoming-call'
+                        voiceUrl: 'mywebsite.com/incoming-call'
                     });
                 });
         } else {
